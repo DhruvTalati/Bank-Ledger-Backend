@@ -1,7 +1,7 @@
 import { createTransaction } from "../services/transactionService";
 import { getAccounts } from "../services/accountService";
 import toast from "react-hot-toast";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 import { useState, useEffect } from "react";
 
 const Transfer = () => {

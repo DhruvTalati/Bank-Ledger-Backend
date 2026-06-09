@@ -5,16 +5,16 @@ import {
   createAccount,
 } from "../services/accountService";
 import useAuth from "../hooks/useAuth";
-import BalanceCard from "../components/BalanceCard";
-import Navbar from "../components/Navbar";
-import StatusCard from "../components/StatusCard";
+import BalanceCard from "../Components/BalanceCard";
+import Navbar from "../Components/Navbar";
+import StatusCard from "../Components/StatusCard";
 import toast from "react-hot-toast";
-import QuickActions from "../components/QuickActions";
-import AccountInfoCard from "../components/AccountInfoCard";
+import QuickActions from "../Components/QuickActions";
+import AccountInfoCard from "../Components/AccountInfoCard";
 import { motion } from "framer-motion";
 import { getTransactions } from "../services/transactionService";
-import RecentTransactions from "../components/RecentTransactions";
-import TransactionTrendChart from "../components/TransactionTrendChart";
+import RecentTransactions from "../Components/RecentTransactions";
+import TransactionTrendChart from "../Components/TransactionTrendChart";
 
 const Dashboard = () => {
   const { user } = useAuth();

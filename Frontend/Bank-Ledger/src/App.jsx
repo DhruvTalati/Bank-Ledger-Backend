@@ -1,11 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Transfer from "./pages/Transfer";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Transactions from "./pages/Transactions";
-import Dashboard from "./pages/Dashboard";
-import Analytics from "./pages/Analytics";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import Transfer from "./Pages/Transfer";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import Transactions from "./Pages/Transactions";
+import Dashboard from "./Pages/Dashboard";
+import Analytics from "./Pages/Analytics";
 
 function App() {
   return (

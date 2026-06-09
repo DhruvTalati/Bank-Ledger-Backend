@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../Components/Navbar";
 import { getAccounts } from "../services/accountService";
 import { getTransactions } from "../services/transactionService";
 import { motion } from "framer-motion";
