@@ -3,32 +3,34 @@ const jwt = require("jsonwebtoken");
 const tokenBlacklistModel = require("../models//blacklist.model");
 
 async function authMiddleware(req, res, next) {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")(1);
-
-  if (!token) {
-    return res.status(401).json({
-      message: "Unauthorized Token!! Token is missing!!",
-    });
-  }
-
-  const isBlacklisted = await tokenBlacklistModel.findOne({ token });
-
-  if (isBlacklisted) {
-    return res.status(401).json({
-      message: "Unauthorized access , token is invalid!!",
-    });
-  }
-
   try {
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Unauthorized Token!! Token is missing!!",
+      });
+    }
+
+    const isBlacklisted = await tokenBlacklistModel.findOne({ token });
+
+    if (isBlacklisted) {
+      return res.status(401).json({
+        message: "Token blacklisted",
+      });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const user = await userModel.findById(decoded.userId);
+
     req.user = user;
 
-    return next();
+    next();
   } catch (err) {
+    console.error(err);
     return res.status(401).json({
-      message: "Unauthorized access , token is invalid!!",
+      message: "Invalid token",
     });
   }
 }
@@ -50,7 +52,6 @@ async function authSystemUserMiddleware(req, res, next) {
     });
   }
 
-  
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await userModel.findById(decoded.userId).select("+systemUser");
