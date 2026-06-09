@@ -1,10 +1,17 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { darkMode, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav className="bg-slate-900 text-white shadow-lg">
@@ -83,7 +90,7 @@ const Navbar = () => {
           </button>
 
           <button
-            onClick={logout}
+            onClick={handleLogout}
             className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg transition"
           >
             Logout
