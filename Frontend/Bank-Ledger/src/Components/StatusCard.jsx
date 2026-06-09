@@ -1,11 +1,25 @@
 const StatusCard = ({ status }) => {
-  return (
-    <div className="bg-white rounded-2xl shadow-lg p-6">
-      <h3 className="text-gray-500 text-sm">Account Status</h3>
+  const isActive = status === "ACTIVE";
 
-      <span className="inline-block mt-3 px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium">
-        {status}
-      </span>
+  return (
+    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg">
+      <p className="text-gray-500 dark:text-gray-400 text-sm">Account Status</p>
+
+      <div className="mt-5">
+        <span
+          className={`px-4 py-2 rounded-full font-semibold ${
+            isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+          }`}
+        >
+          {status}
+        </span>
+      </div>
+
+      <p className="mt-5 text-sm text-gray-500">
+        {isActive
+          ? "Account is active and operational."
+          : "Account currently restricted."}
+      </p>
     </div>
   );
 };

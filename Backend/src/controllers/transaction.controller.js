@@ -119,7 +119,7 @@ async function createTransaction(req, res) {
      */
 
     session.startTransaction();
-    const [transaction] = await transactionModel.create(
+    [transaction] = await transactionModel.create(
       [
         {
           fromAccount,
@@ -132,7 +132,9 @@ async function createTransaction(req, res) {
       { session },
     );
 
-    await transaction.save({ session });
+    console.log("CREATED TRANSACTION:", transaction);
+
+    // await transaction.save({ session });
     /**
      * 6. Create DEBIT ledger entry
      */
@@ -174,9 +176,10 @@ async function createTransaction(req, res) {
     transaction.status = "COMPLETED";
     await transaction.save({ session });
   } catch (error) {
-    return res.status(400).json({
-      message:
-        "Transaction is Pending due to some issue . Please try again after same time!!",
+    console.error("TRANSFER ERROR:", error);
+
+    return res.status(500).json({
+      message: error.message,
     });
   }
   /**
@@ -189,14 +192,14 @@ async function createTransaction(req, res) {
    * 10. Send email notification
    */
 
-  await emailService.sendTransactionEmail(
-    req.user.email,
-    req.user.name,
-    amount,
-    "DEBIT",
-    transaction._id,
-    currentBalance,
-  );
+  // await emailService.sendTransactionEmail(
+  //   req.user.email,
+  //   req.user.name,
+  //   amount,
+  //   "DEBIT",
+  //   transaction._id,
+  //   currentBalance,
+  // );
 
   return res.status(201).json({
     message: "Transaction Completed Successfully",
@@ -284,4 +287,30 @@ async function createInitIalFundsTransaction(req, res) {
     transaction: transaction,
   });
 }
-module.exports = { createTransaction, createInitIalFundsTransaction };
+
+const getTransactionHistory = async (req, res) => {
+  try {
+    const { accountId } = req.params;
+
+    const transactions = await transactionModel
+      .find({
+        $or: [{ fromAccount: accountId }, { toAccount: accountId }],
+      })
+      .populate("fromAccount", "_id")
+      .populate("toAccount", "_id")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      transactions,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+module.exports = {
+  createTransaction,
+  createInitIalFundsTransaction,
+  getTransactionHistory,
+};

@@ -1,20 +1,35 @@
 const AccountInfoCard = ({ account }) => {
   return (
-    <div className="card">
-      <h3>Account Information</h3>
+    <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg">
+      <h3 className="text-lg font-semibold mb-5">Account Information</h3>
 
-      <p>
-        <strong>Currency:</strong> {account.currency}
-      </p>
+      <div className="space-y-4">
+        <div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Currency</p>
+          <p className="font-semibold text-lg">{account.currency}</p>
+        </div>
 
-      <p>
-        <strong>Account ID:</strong> {account._id}
-      </p>
+        <div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Account ID</p>
 
-      <p>
-        <strong>Created:</strong>{" "}
-        {new Date(account.createdAt).toLocaleDateString()}
-      </p>
+          <p className="font-mono text-sm bg-slate-100 p-2 rounded-lg mt-1">
+            {account._id.slice(0, 8)}...
+            {account._id.slice(-6)}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Created On</p>
+
+          <p className="font-medium">
+            {new Date(account.createdAt).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
