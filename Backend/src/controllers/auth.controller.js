@@ -3,6 +3,7 @@ const emailService = require("../services/email.service");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const tokenBlacklistModel = require("../models/blacklist.model");
+const accountModel = require("../models/account.model");
 
 /**
  * - user register controller
@@ -27,6 +28,10 @@ async function userRegisterController(req, res) {
     email,
     password,
     name,
+  });
+
+  await accountModel.create({
+    user: user._id,
   });
 
   const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {

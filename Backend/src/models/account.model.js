@@ -17,6 +17,10 @@ const accountSchema = new mongoose.Schema(
       },
       default: "ACTIVE",
     },
+    accountNumber: {
+      type: String,
+      unique: true,
+    },
     currency: {
       type: String,
       default: "INR",
@@ -52,7 +56,7 @@ accountSchema.methods.getBalance = async function () {
     return 0;
   }
 
-  return balanceData[0].totalCredit- balanceData[0].totalDebit
+  return balanceData[0].totalCredit - balanceData[0].totalDebit;
 };
 
 const accountModel = mongoose.model("account", accountSchema);

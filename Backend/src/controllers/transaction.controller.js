@@ -106,20 +106,20 @@ async function createTransaction(req, res) {
   const currentBalance = await fromUserAccount.getBalance();
 
   if (currentBalance < amount) {
-    res.status(400).json({
+    return res.status(400).json({
       message: `Insufficient currentBalance. Current Balance is ${currentBalance}.Requested amount is ${amount}`,
     });
   }
 
   let transaction;
+  const session = await mongoose.startSession();
   try {
     /**
      * 5. Create transaction (PENDING)
      */
 
-    const session = await mongoose.startSession();
     session.startTransaction();
-    transaction = await transactionModel.create(
+    const [transaction] = await transactionModel.create(
       [
         {
           fromAccount,
@@ -147,10 +147,6 @@ async function createTransaction(req, res) {
       ],
       { session },
     );
-
-    await (() => {
-      return new Promise((resolve) => setTimeout(resolve, 100 * 1000));
-    })();
 
     /**
      * 7. Create CREDIT ledger entry
